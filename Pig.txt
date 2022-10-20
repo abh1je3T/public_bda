@@ -1,0 +1,28 @@
+
+###Pig
+
+sudo service ssh start 
+ ssh localhost 
+ /usr/local/hadoop/sbin/start-all.sh 
+ Jps 
+
+sudo nano customers.txt
+enpid , ename , address , desg salary
+1001, abcd,roadi cityi, employee1,10000
+1002, city2,road2 city2, employee2, 15000
+1003, hijk,road3 city3,manager, 5000
+
+
+hdfs dfs -put customers.txt / 
+hdfs dfs -ls / 
+
+pig +x local
+
+customers = LOAD 'customers.txt' USING PigStorage(','); 
+dump customers; 
+quit; 
+
+pig 
+customers = LOAD 'hdfs://localhost:54310/customers.txt' USING PigStorage(','); 
+dump customers; 
+quit; 

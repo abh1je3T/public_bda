@@ -1,0 +1,29 @@
+
+###Flume
+https://dlcdn.apache.org/flume/1.10.1/apache-flume-1.10.1-src.tar.gz 
+https://dlcdn.apache.org/flume/1.10.1/apache-flume-1.10.1-bin.tar.gz 
+
+
+cd /usr/local 
+sudo mkdir Flume 
+
+cd /mnt/c/Users/Abhi/Downloads/ 
+sudo cp -p apache-flume-1.10.1-bin.tar.gz apache-flume-1.10.1-src.tar.gz /usr/local/Flume 
+sudo tar -xvzf apache-flume-1.10.1-bin.tar.gz 
+sudo tar -xvzf apache-flume-1.10.1-src.tar.gz 
+
+sudo mv apache-flume-1.10.1-bin Flume_bin 
+sudo mv apache-flume-1.10.1-src Flume_src 
+nano ~/.bashrc 
+export FLUME_HOME=/usr/local/Flume/Flume_bin 
+export PATH=$PATH:$FLUME_HOME/bin 
+
+source ~/.bashrc 
+
+cd /usr/local/Flume/Flume_bin/conf 
+sudo cp -p flume-env.sh.template flume-env.sh 
+sudo cp -p flume-conf.properties.template  flume-conf.properties  
+
+sudo nano flume-env.sh 
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 
+flume-ng

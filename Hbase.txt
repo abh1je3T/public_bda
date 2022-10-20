@@ -1,0 +1,105 @@
+###Hbase
+
+
+su hduser 
+cd /usr/local 
+sudo wget https://archive.apache.org/dist/hbase/2.4.2/hbase-2.4.2-bin.tar.gz 
+sudo tar xzvf hbase-2.4.2-bin.tar.gz 
+
+sudo mv hbase-2.4.2 hbase 
+cd hbase/conf 
+
+sudo nano hbase-env.sh
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64 
+
+sudo nano hbase-site.xml
+<property> 
+    <name>hbase.rootdir</name> 
+    <value>file:///usr/local/hbase</value> 
+</property> 
+<property> 
+    <name>hbase.zookeeper.property.dataDir</name> 
+    <value>/usr/local/hbase/zookeeper</value> 
+</property> 
+
+
+cd /usr/local
+sudo chmod 777 hbase
+
+ cd /usr/local/hbase/bin 
+ ./start-hbase.sh 
+ ./hbase shell 
+
+create 'test', 'cf' 
+put 'test', 'row1', 'cf:a', 'Maneesh' 
+put 'test', 'row2', 'cf:b', '11' 
+put 'test', 'row3', 'cf:c', 'Mumbai' 
+scan 'test' 
+exit 
+
+./stop-hbase.sh
+
+
+sudo apt install python3-pip 
+pip3 install happybase 
+
+ cd /usr/local/hbase/bin 
+ ./hbase-daemon.sh start thrift 
+ ./start-hbase.sh 
+
+
+python3
+
+import happybase as hb 
+conn=hb.Connection('127.0.0.1', 9090) 
+conn.table('test').row('row1') 
+conn.table('test').row('row2') 
+conn.table('test').row('row3') 
+exit() 
+
+
+./stop-hbase.sh 
+./hbase-daemon.sh stop thrift 
+
+
+ sudo service ssh start 
+ ssh localhost 
+ /usr/local/hadoop/sbin/start-all.sh 
+ jps 
+
+
+ cd /usr/local/hbase/bin 
+ ./start-hbase.sh 
+ cd /usr/local/hbase/bin 
+
+
+./hbase shell 
+
+create 'test', 'cf' 
+put 'test', 'row1', 'cf:a', 'Maneesh' 
+put 'test', 'row2', 'cf:b', '11' 
+put 'test', 'row3', 'cf:c', 'Mumbai' 
+scan 'test' 
+exit 
+
+ cd /usr/local 
+ nano simple1.txt 
+1,patkar 
+2,mithibai 
+3,kc 
+
+hdfs dfs -copyFromLocal /usr/local/simple.txt / 
+cd /usr/local/hbase/bin 
+
+./hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator="," Dimporttsv.columns=HBASE_ROW_KEY,cf test /simple1.txt 
+
+./hbase shell 
+scan 'test' 
+exit 
+
+cd /usr/local/hbase/bin 
+./hbase org.apache.hadoop.hbase.mapreduce.Export test /location 
+
+hdfs dfs -ls /location 
+
+

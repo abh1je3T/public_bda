@@ -1,0 +1,75 @@
+###Hive
+
+ su hduser 
+ sudo service ssh start
+ ssh localhost 
+ start-all.sh 
+ jps 
+
+
+cd /usr/local 
+sudo rm -r hive 
+
+hdfs dfs -rm -r -f /tmp 
+hdfs dfs -rm -r /user/hive 
+
+
+
+cd /home/hduser 
+sudo nano sample14.txt 
+
+101,Raj,15000,Clerk 
+102,Maneesh,50000,Manager 
+103,Chirag,150000,Director 
+
+cd /usr/local 
+sudo wget https://downloads.apache.org/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz 
+sudo tar -xvzf apache-hive-3.1.2-bin.tar.gz 
+
+sudo mv apache-hive-3.1.2-bin hive 
+sudo chmod 777 hive 
+cd /home/hduser 
+
+sudo nano ~/.bashrc
+export HIVE_HOME=/usr/local/hive 
+export PATH=$PATH:$HIVE_HOME/bin 
+source ~/.bashrc
+
+
+cd /usr/local/hive/bin 
+sudo nano hive-config.sh 
+
+ 
+
+export HADOOP_HOME=/usr/local/hadoop 
+ hdfs dfs -mkdir /tmp 
+ hdfs dfs -chmod g+w /tmp 
+ hdfs dfs -mkdir -p /user/hive/warehouse 
+ hdfs dfs -chmod g+w /user/hive/warehouse 
+ sudo chmod 777 /usr/local/hive 
+
+ cd $HIVE_HOME 
+ $HIVE_HOME/bin/schematool -initSchema -dbType derby 
+
+If error as "NoSuch Method found"
+
+
+sudo cp $HADOOP_HOME/share/hadoop/common/lib/guava-27.0-jre.jar /usr/local/hive/lib/ 
+sudo rm /usr/local/hive/lib/guava-19.0.jar 
+
+cd $HIVE_HOME 
+$HIVE_HOME/bin/schematool -initSchema -dbType derby 
+
+hive
+
+CREATE TABLE IF NOT EXISTS employee ( eid int, name String,salary String, designation 
+String)COMMENT 'Employee details' ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n' STORED AS TEXTFILE; 
+
+LOAD DATA LOCAL INPATH "/home/hduser/sample14.txt" into table employee; 
+
+select * from employee; 
+
+stop-all.sh
+
+
